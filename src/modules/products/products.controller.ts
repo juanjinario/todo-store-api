@@ -11,6 +11,7 @@ import {
   HttpCode,
   ParseIntPipe,
 } from '@nestjs/common';
+import { OwnParseIntPipe } from 'src/shared/pipe/own-parse-int.pipe';
 import { Product } from './models/product';
 import { ProductsService } from './products.service';
 
@@ -19,7 +20,7 @@ export class ProductsController {
   constructor(private productService: ProductsService) {}
 
   @Delete(':id')
-  delete(@Param('id', new ParseIntPipe()) id: number): string {
+  delete(@Param('id', new OwnParseIntPipe()) id: number): string {
     return this.productService.delete(id);
   }
 
