@@ -19,10 +19,8 @@ export class ProductsController {
   constructor(private productService: ProductsService) {}
 
   @Delete(':id')
-  delete(@Param('id') id: string): any {
-    return {
-      message: `delete ${id}`,
-    };
+  delete(@Param('id', new ParseIntPipe()) id: number): string {
+    return this.productService.delete(id);
   }
 
   @Get()

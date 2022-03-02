@@ -1,4 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { throwError } from 'rxjs';
 import { Product } from './models/product';
 
 @Injectable()
@@ -29,23 +35,42 @@ export class ProductsService {
     return newProduct;
   }
 
+  delete(id: number): string {
+    const index = this.products.findIndex((product) => product.id === id);
+    if (index < 0) {
+      throw new HttpException(
+        `Product #${id} not found for delete`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    this.products.splice(index, 1);
+    return 'Ok';
+  }
+
   findAll(): Product[] {
     return this.products;
   }
 
   findOneById(id: number) {
-    return this.products.find((product) => product.id === id);
+    const product = this.products.find((product) => product.id === id);
+    if (!product) {
+      throw new NotFoundException(`Product #${id} not found`);
+    }
+    return product;
   }
 
   update(id: number, payload: Product): Product {
     const index = this.products.findIndex((product) => product.id === id);
-    if (index > -1) {
-      this.products[index] = {
-        ...this.products[index],
-        ...payload,
-      };
-      return this.products[index];
+    if (index < 0) {
+      throw new HttpException(
+        `Product #${id} not found for update`,
+        HttpStatus.NOT_FOUND,
+      );
     }
-    return null;
+    this.products[index] = {
+      ...this.products[index],
+      ...payload,
+    };
+    return this.products[index];
   }
 }
