@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { throwError } from 'rxjs';
 import { Product } from './models/product';
+import { ProductDto } from './models/product.dto';
 
 @Injectable()
 export class ProductsService {
@@ -25,7 +26,8 @@ export class ProductsService {
     },
   ];
 
-  add(product: Product) {
+  add(payload: ProductDto) {
+    const product = payload;
     const newProduct = {
       id: this.countId,
       ...product,

@@ -13,6 +13,7 @@ import {
 } from '@nestjs/common';
 import { OwnParseIntPipe } from 'src/shared/pipe/own-parse-int.pipe';
 import { Product } from './models/product';
+import { ProductDto } from './models/product.dto';
 import { ProductsService } from './products.service';
 
 @Controller('products')
@@ -51,7 +52,7 @@ export class ProductsController {
   // }
 
   @Post()
-  create(@Body() payload: Product): Product {
+  create(@Body() payload: ProductDto): Product {
     return this.productService.add(payload);
   }
 
