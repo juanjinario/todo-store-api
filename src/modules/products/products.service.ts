@@ -5,13 +5,12 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { throwError } from 'rxjs';
-import { Product } from './models/product';
-import { ProductDto } from './models/product.dto';
+import { CreateProductDto, UpdateProductDto } from './models/product.dto';
 
 @Injectable()
 export class ProductsService {
   private countId = 3;
-  private products: Product[] = [
+  private products: any[] = [
     {
       id: 1,
       name: 'holardo',
@@ -26,7 +25,7 @@ export class ProductsService {
     },
   ];
 
-  add(payload: ProductDto) {
+  add(payload: any) {
     const product = payload;
     const newProduct = {
       id: this.countId,
@@ -49,7 +48,7 @@ export class ProductsService {
     return 'Ok';
   }
 
-  findAll(): Product[] {
+  findAll(): any[] {
     return this.products;
   }
 
@@ -61,7 +60,7 @@ export class ProductsService {
     return product;
   }
 
-  update(id: number, payload: Product): Product {
+  update(id: number, payload: UpdateProductDto): UpdateProductDto {
     const index = this.products.findIndex((product) => product.id === id);
     if (index < 0) {
       throw new HttpException(

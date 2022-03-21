@@ -12,8 +12,7 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { OwnParseIntPipe } from 'src/shared/pipe/own-parse-int.pipe';
-import { Product } from './models/product';
-import { ProductDto } from './models/product.dto';
+import { CreateProductDto, UpdateProductDto } from './models/product.dto';
 import { ProductsService } from './products.service';
 
 @Controller('products')
@@ -30,7 +29,7 @@ export class ProductsController {
     @Query('limit') limit = 100,
     @Query('offset') offset = 0,
     @Query('brand') brand: string,
-  ): Product[] {
+  ): any[] {
     // return `products limit => ${limit}, offset => ${offset}, brand => ${brand}`;
     return this.productService.findAll();
   }
@@ -41,7 +40,7 @@ export class ProductsController {
   }
 
   @Get(':id')
-  getOneById(@Param('id', new ParseIntPipe()) id: number): Product {
+  getOneById(@Param('id', new ParseIntPipe()) id: number): any {
     return this.productService.findOneById(id);
   }
 
@@ -52,15 +51,15 @@ export class ProductsController {
   // }
 
   @Post()
-  create(@Body() payload: ProductDto): Product {
+  create(@Body() payload: CreateProductDto): CreateProductDto {
     return this.productService.add(payload);
   }
 
   @Put(':id')
   update(
-    @Body() payload: Product,
+    @Body() payload: UpdateProductDto,
     @Param('id', new ParseIntPipe()) id: number,
-  ): Product {
+  ): UpdateProductDto {
     return this.productService.update(id, payload);
   }
 }
